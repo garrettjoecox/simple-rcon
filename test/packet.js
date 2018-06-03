@@ -21,5 +21,15 @@ describe('Packet', function() {
       assert.equal(response.type, Protocol.SERVERDATA_AUTH);
       assert.equal(response.body, 'rcon_password');
     });
+
+    it('should handle UTF8', function() {
+      var request = Packet.encode(Protocol.SERVERDATA_AUTH, Protocol.AUTH_ID, "ÆØÅ");
+      var response = Packet.decode(request);
+      assert(response);
+      assert(response.size);
+      assert.equal(response.id, Protocol.AUTH_ID);
+      assert.equal(response.type, Protocol.SERVERDATA_AUTH);
+      assert.equal(response.body, 'ÆØÅ');
+    });
   });
 });
